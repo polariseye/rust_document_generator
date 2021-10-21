@@ -1,0 +1,2 @@
+# rust_document_generator
+使用过程宏生成rust的API文档。因为cargo doc 文档内容太多。如果用作API使用文档不太适合。所以使用过程宏来实现生成简洁的API文档
