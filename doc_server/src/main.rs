@@ -7,13 +7,7 @@ use warp::http::StatusCode;
 use warp::{Filter, Rejection};
 use std::collections::HashMap;
 use std::error::Error;
-
-/*
-pub fn do_nothing_filter(value: &tera::Value, _: &HashMap<String, tera::Value>) ->tera::Result<tera::Value> {
-    let s = tera::try_get_value!("do_nothing_filter", "value", String, value);
-    Ok(tera::to_value(&s).unwrap())
-}
-*/
+use std::str::FromStr;
 
 static TERA: Lazy<Tera> = Lazy::new(|| {
     let mut tera_obj = match Tera::new("templates/**/*") {
@@ -25,7 +19,6 @@ static TERA: Lazy<Tera> = Lazy::new(|| {
     };
 
     tera_obj.autoescape_on(vec!["html"]);
-    //tera_obj.register_filter("do_nothing",do_nothing_filter);
 
     if tera_obj.get_template_names().count()<=0{
         println!("have no template");
@@ -36,13 +29,14 @@ static TERA: Lazy<Tera> = Lazy::new(|| {
         println!("templeta item {}",item);
     }
 
+    /* no need reload
     match tera_obj.full_reload() {
         Ok(_) => {}
         Err(err) => {
             println!("full_reload error:{}", err);
             std::process::exit(2);
         }
-    }
+    }*/
 
     tera_obj
 });
@@ -52,8 +46,20 @@ static TERA: Lazy<Tera> = Lazy::new(|| {
 #[doc_macro::doc_header]
 #[tokio::main]
 async fn main() {
-    println!("work dir:{}",std::env::current_dir().unwrap().to_str().unwrap());
-    //test_tera();
+    let arg_list:Vec<String>= std::env::args().collect();
+    let mut port=8011u16;
+    if arg_list.len()!=0&& &arg_list[1].to_lowercase()=="-p"{
+        port=match u16::from_str( &arg_list[2]){
+            Ok(val)=>{
+                val
+            },
+            Err(err)=>{
+                println!("convert '{}' to listen port error:{}",&arg_list[2],err.to_string());
+                std::process::exit(1);
+            }
+        }
+    }
+
     TERA.check_macro_files();
 
     let api_filter = warp::any();
@@ -70,7 +76,8 @@ async fn main() {
             .and(warp::get())
             .and_then(get_api_list));
 
-    warp::serve(api_filter).run(([127, 0, 0, 1], 3032)).await;
+    println!("doc server start listen at:{}",port);
+    warp::serve(api_filter).run(([0, 0, 0, 0], port)).await;
 }
 
 /// module Main
