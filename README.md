@@ -44,3 +44,6 @@ fn hello_word(name:String,extra_hellor:String)->String{
  * 使用fn 指定 API的基本信息，格式: fn {API名} {API请求路径} {API描述} API描述可以有多行
  * 使用param 指定请求参数。每个参数单独占一行。 参数具体格式是: {参数名} {参数类型} {required|optional} {参数描述}
  * 使用return 指定返回值。 具体格式: return {可选的返回描述} \r\n {返回的具体内容描述}
+
+# 后期计划
+现在返回值说明只支持字符串。后期会考虑添加对指定struct的支持
