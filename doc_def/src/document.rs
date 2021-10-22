@@ -2,46 +2,46 @@ use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
 /// API文档
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize,Clone)]
 pub struct ApiDocument {
     /// api模块名
     #[serde(rename = "ModuleName")]
-    module_name: String,
+   pub module_name: String,
     /// api的请求方法
     #[serde(rename = "HttpMethod")]
-    http_method: String,
+    pub http_method: String,
     /// API的请求路径
     #[serde(rename = "Path")]
-    path: String,
+    pub path: String,
     /// Api描述
     #[serde(rename = "Desc")]
-    desc: String,
+    pub desc: String,
 
     /// 参数列表
     #[serde(rename = "ParamList")]
-    param_list: Vec<ApiParam>,
+    pub param_list: Vec<ApiParam>,
 
     /// 返回值内容类型
     #[serde(rename = "ReturnContentType")]
-    return_content_type: ReturnContentType,
+    pub return_content_type: ReturnContentType,
     /// 返回值内容
     #[serde(rename = "ReturnContent")]
-    return_content: String,
+    pub return_content: String,
     /// 返回值描述
     #[serde(rename = "ReturnDesc")]
-    return_desc: String,
+    pub return_desc: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize,Clone)]
 pub struct ApiParam {
     #[serde(rename = "Name")]
-    name: String,
+    pub name: String,
     #[serde(rename = "ParamType")]
-    param_type: String,
+    pub param_type: String,
     #[serde(rename = "Required")]
-    required: bool,
+    pub  required: bool,
     #[serde(rename = "Desc")]
-    desc: String,
+    pub  desc: String,
 }
 
 impl Default for ApiParam {
@@ -199,9 +199,9 @@ impl ApiDocument {
 }
 
 // 指定的返回值类型
-#[derive(Debug, Serialize_repr, Deserialize_repr)]
+#[derive(Debug, Serialize_repr, Deserialize_repr, Clone)]
 #[repr(u8)]
-enum ReturnContentType {
+pub enum ReturnContentType {
     String,
     Type,
 }

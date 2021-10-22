@@ -62,17 +62,22 @@ pub fn save_item_str(item_type: ItemType, data_item: &str) -> Result<(), String>
     }
 }
 
+pub fn get_doc_file_path(dir_path:&str)->String{
+    let path_val= Path::new(dir_path);
+    path_val.join(FILE_NAME).to_str().unwrap().to_string()
+}
+
 #[allow(unused)]
 pub struct Item {
     #[allow(unused)]
-    item_type: u32,
+    pub item_type: u32,
     #[allow(unused)]
-    content: String,
+    pub content: String,
 }
 
 /// 获取数据列表
-pub fn get_val_list(dir_path: &str) -> Result<Vec<Item>, String> {
-    let file_path = Path::new(dir_path).join(FILE_NAME);
+pub fn get_val_list(file_path_str: &str) -> Result<Vec<Item>, String> {
+    let file_path = Path::new(file_path_str);
     let file_data;
     match std::fs::read(file_path) {
         Ok(bytes_data) => {

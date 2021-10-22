@@ -11,4 +11,4 @@ doc_def={path="./doc_def"}
 doc_macro={path="./doc_macro"}
 
 [workspace]
-members=["doc_def","doc_macro"]
+members=["doc_def","doc_macro","doc_server"]
