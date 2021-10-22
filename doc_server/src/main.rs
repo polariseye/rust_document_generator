@@ -74,7 +74,7 @@ async fn main() {
 }
 
 /// module Main
-/// fn / get 获取项目列表
+/// fn GetProjectList / get 获取项目列表
 /// return
 ///     一个html文档
 #[doc_macro::api]
@@ -101,7 +101,7 @@ pub async fn get_project_list() -> Result<Box<dyn warp::Reply>, Rejection> {
 }
 
 /// module Main
-/// fn /api/{project_id} get 获取指定项目的API列表
+/// fn GetApiList /api/{project_id} get 获取指定项目的API列表
 /// param
 ///     ProjectId    string required     项目Id ，此参数在路径上面
 /// return
@@ -125,6 +125,7 @@ pub async fn get_api_list(project_id: String) -> Result<Box<dyn warp::Reply>, Re
         Ok(val) => {
             let mut ctx = tera::Context::new();
             ctx.insert("api_list", &val);
+            ctx.insert("project_item", &project_item);
 
             match TERA.render("api.html", &ctx) {
                 Ok(val) => Ok(Box::new(warp::reply::html(val))),

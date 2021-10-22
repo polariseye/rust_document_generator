@@ -10,6 +10,9 @@ pub struct ApiDocument {
     /// api的请求方法
     #[serde(rename = "HttpMethod")]
     pub http_method: String,
+    /// api 名
+    #[serde(rename = "Name")]
+    pub name:String,
     /// API的请求路径
     #[serde(rename = "Path")]
     pub path: String,
@@ -60,6 +63,7 @@ impl Default for ApiDocument {
         Self {
             module_name: "".to_string(),
             http_method: "".to_string(),
+            name:"".to_string(),
             path: "".to_string(),
             desc: "".to_string(),
             param_list: Vec::new(),
@@ -99,11 +103,22 @@ impl ApiDocument {
         let fn_name = get_word(line);
         match fn_name {
             Some(val) => {
-                self.path = val.0.to_string();
+                self.name = val.0.to_string();
                 line = val.1;
             }
             None => {
                 return Err("no found fn name".to_string());
+            }
+        }
+
+        let api_path = get_word(line);
+        match api_path {
+            Some(val) => {
+                self.path = val.0.to_string();
+                line = val.1;
+            }
+            None => {
+                return Err("no found api path".to_string());
             }
         }
 

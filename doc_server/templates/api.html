@@ -1,39 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>api列表</title>
+    <meta charset="utf-8">
+    <title>api文档</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        .page_container {
+            width: 100%;
+            position: relative;
+            background-color: #FFFFFF;
+            color: #2C3E50;
+            display: flex;
+            justify-content: center;
+        }
+        .api_page {
+            width: 1200px;
+            position: relative;
+        }
+        .alert_box {
+            margin: 20px 0 10px 0;
+            border: 1px solid #abdcff;
+            background-color: #f0faff;
+            padding: 16px;
+            position: relative;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            color: #515a6e;
+            line-height: 1.5;
+        }
+        .alert_box .title {
+            font-size: 16px;
+            color: #17233d;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .alert_box .conetnt {
+            font-size: 14px;
+            color: #515a6e;
+            line-height: 21px;
+            display: none;
+            text-align: justify;
+        }
+        .interface .items {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .items_list {
+            margin-bottom: 20px;
+        }
+        .list_header .items label {
+            display: block;
+            margin-left: 5px;
+            padding: 1px 6px;
+            border-radius: 3px;
+            background-color: #F3F4F5;
+        }
+        .list_desc {
+            margin: 5px 0;
+        }
+        .list_param .table{
+            margin-top: 10px;
+            border: 1px solid #dfe2e5;
+        }
+        .table .tr {
+            display: flex;
+            align-items: center;
+        }
+        .table .tr .th,
+        .table .tr .td {
+            padding: 10px 20px;
+            flex: 1;
+            border-right: 1px solid #dfe2e5;
+        }
+        .table .tr .td:last-child {
+            border-right: none;
+            width: 500px;
+            flex: inherit;
+        }
+        .thead .td {
+            font-weight: 600;
+            color: #000000;
+        }
+        .tbody .tr {
+            border-top: 1px solid #dfe2e5;
+        }
+        .tbody .tr:nth-child(2n) {
+            background-color: #F3F4F5;
+        }
+        .list_return {
+            margin-top: 20px;
+        }
+        pre code.hljs {
+            position: relative;
+            border-radius: 6px;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/monokai.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
-<body >
-<div>
-    {{api_list.Header}}
-</div>
-<div style="position: absolute; left: 45%;top:20%; transform: translateX(-50%);">
-    <ul >
-        {% for item in api_list.ApiList %}
-            <li>
-                {{item.ModuleName}} {{item.HttpMethod}} {{item.Path}}
-                <div>{{item.Desc}}</div>
-                <div>
-                    <div>参数:</div>
-                    <ul>
-                    {% for param_item in item.ParamList %}
-                        <li>{{param_item.Name}} {{param_item.ParamType}} {{param_item.Required}} {{param_item.Desc}}</li>
-                    {% endfor %}
-                    </ul>>
+<body>
+<div class="page_container">
+    <div class="api_page">
+        <div class="page_header">
+            <div class="alert_box">
+                <div class="title">{{project_item.Name}}</div>
+                <div class="content">
+                    {{api_list.Header}}
                 </div>
-                <div>
-                    <div>返回值:</div>
-                    <div>
-                        {{ item.ReturnDesc }}
+            </div>
+        </div>
+        <div class="page_content">
+            <div class="interface">
+                <!-- 接口循环 -->
+                {% for api_item in api_list.ApiList %}
+                <div class="items_list">
+                    <div class="list_header">
+                        <div class="items">
+                            模块名:<label>{{api_item.ModuleName}}</label>
+                        </div>
+                        <div class="items">
+                            接口名称:<label>{{api_item.Name}}</label>
+                        </div>
+                        <div class="items">
+                            请求方式:<label>{{api_item.HttpMethod}}</label>
+                        </div>
+                        <div class="items">
+                            路径:<label>{{api_item.Path}}</label>
+                        </div>
                     </div>
-                    <div>
-                        {{ item.ReturnContent }}
+                    <div class="list_desc">{{api_item.Desc}}</div>
+                    <div class="list_param">
+                        <div class="name">参数列表:</div>
+                        <div class="table">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="td">参数名称</div>
+                                    <div class="td">参数类型</div>
+                                    <div class="td">是否必须</div>
+                                    <div class="td">备注</div>
+                                </div>
+                            </div>
+                            <div class="tbody">
+                                {% for param_item in api_item.ParamList %}
+                                <div class="tr">
+                                    <div class="td">{{param_item.Name}}</div>
+                                    <div class="td">{{param_item.ParamType}}</div>
+                                    <div class="td">{{param_item.Required}}</div>
+                                    <div class="td">{{param_item.Desc}}</div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list_return">
+                        <div class="">返回值:{{api_item.ReturnContent}}</div>
+                        <pre>
+									<code class="language-json">
+                                        {{api_item.ReturnContent}}
+									</code>
+						</pre>
                     </div>
                 </div>
-            </li>
-        {% endfor %}
-    </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
