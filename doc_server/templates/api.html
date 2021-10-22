@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>api列表</title>
+</head>
+<body >
+<div>
+    {{api_list.Header}}
+</div>
+<div style="position: absolute; left: 45%;top:20%; transform: translateX(-50%);">
+    <ul >
+        {% for item in api_list.ApiList %}
+            <li>
+                {{item.ModuleName}} {{item.HttpMethod}} {{item.Path}}
+                <div>{{item.Desc}}</div>
+                <div>
+                    <div>参数:</div>
+                    <ul>
+                    {% for param_item in item.ParamList %}
+                        <li>{{param_item.Name}} {{param_item.ParamType}} {{param_item.Required}} {{param_item.Desc}}</li>
+                    {% endfor %}
+                    </ul>>
+                </div>
+                <div>
+                    <div>返回值:</div>
+                    <div>
+                        {{ item.ReturnDesc }}
+                    </div>
+                    <div>
+                        {{ item.ReturnContent }}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

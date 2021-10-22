@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>api列表</title>
+</head>
+<body >
+<div style="position: absolute; left: 45%;top:20%; transform: translateX(-50%);">
+    <ul >
+        {% for item in project_list %}
+          <li><a href="api/{{item.Id}}">{{item.Name}}</a> </li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>
