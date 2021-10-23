@@ -100,7 +100,7 @@ impl ApiDocument {
             return Ok(());
         }
 
-        let fn_name = get_word(line);
+        let fn_name = get_word(line.trim_start());
         match fn_name {
             Some(val) => {
                 self.name = val.0.to_string();
@@ -111,7 +111,7 @@ impl ApiDocument {
             }
         }
 
-        let api_path = get_word(line);
+        let api_path = get_word(line.trim_start());
         match api_path {
             Some(val) => {
                 self.path = val.0.to_string();
@@ -125,7 +125,7 @@ impl ApiDocument {
         if line.is_empty() {
             return Err("no found fn http_method".to_string());
         }
-        let http_method = get_word(line);
+        let http_method = get_word(line.trim_start());
         match http_method {
             Some(val) => {
                 self.http_method = val.0.to_string();
@@ -202,24 +202,24 @@ impl ApiDocument {
     /// 解析返回文本块
     pub fn parse_return(&mut self, is_first: bool, line: &str) -> Result<(), String> {
         if is_first {
-            match get_word(line){
+            match get_word(line.trim_start()){
                 Some(val)=>{
                     match val.0{
                         "string"=>{
-                            self.return_desc = val.1 .to_string();
+                            self.return_desc = val.1.trim_start() .to_string();
                             self.return_content_type=ReturnContentType::String;
                         },
                         "type"=>{
-                            self.return_desc = val.1.to_string();
+                            self.return_desc = val.1.trim_start() .to_string();
                             self.return_content_type=ReturnContentType::Type;
                         },
                         _=>{
-                            self.return_desc = line.to_string();
+                            self.return_desc = line.trim_start().to_string();
                         }
                     }
                 },
                 None=>{
-                    self.return_desc = line.to_string();
+                    self.return_desc = line.trim_start().to_string();
                 }
             }
             return Ok(());
