@@ -6,7 +6,7 @@
 /// fn main(){
 /// }
 ///
-/// /// Module the name of this module
+/// /// module the name of this module
 /// /// fn HelloWorld /v1/HelloWorld post # this is figure out the api base info, such as "fn {ApiName} {RequestPath} {HttpMethod} {Description}"
 /// /// + api description can have multiple line. and it can start with "+" to preserve extra white space
 /// /// param

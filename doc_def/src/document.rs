@@ -202,7 +202,26 @@ impl ApiDocument {
     /// 解析返回文本块
     pub fn parse_return(&mut self, is_first: bool, line: &str) -> Result<(), String> {
         if is_first {
-            self.return_desc = line.to_string();
+            match get_word(line){
+                Some(val)=>{
+                    match val.0{
+                        "string"=>{
+                            self.return_desc = val.1 .to_string();
+                            self.return_content_type=ReturnContentType::String;
+                        },
+                        "type"=>{
+                            self.return_desc = val.1.to_string();
+                            self.return_content_type=ReturnContentType::Type;
+                        },
+                        _=>{
+                            self.return_desc = line.to_string();
+                        }
+                    }
+                },
+                None=>{
+                    self.return_desc = line.to_string();
+                }
+            }
             return Ok(());
         }
 
@@ -246,41 +265,71 @@ pub fn parse_statement(doc_list: Vec<String>) -> Result<ApiDocument, String> {
     for line in doc_list.iter() {
         // 查找到当前应该处理的段类型
         let mut is_first = false;
-        let mut actual_line = line.trim_start_matches(|t: char| t.is_ascii_whitespace());
-        if actual_line.starts_with("module") {
-            actual_line = actual_line.strip_prefix("module").unwrap().trim_start();
-            is_first = true;
-            segment_type = SegmentType::ModuleName;
-        } else if actual_line.starts_with("fn") {
-            actual_line = actual_line.strip_prefix("fn").unwrap().trim_start();
-            is_first = true;
-            segment_type = SegmentType::FnName;
-        } else if actual_line == "param" {
-            actual_line = actual_line.strip_prefix("param").unwrap().trim_start();
-            is_first = true;
-            segment_type = SegmentType::Param;
-        } else if actual_line == "return" {
-            actual_line = actual_line.strip_prefix("return").unwrap().trim_start();
-            is_first = true;
-            segment_type = SegmentType::Return;
-        } else {
-            actual_line = line.trim_start().trim_start_matches(|c: char| c == '+');
-            // 多行拼接使用+ 。之所以需要这个。是因为让使用者能保留多余的空字符以保证格式
+
+        let mut left_str;
+        let prefix_word;
+        match get_word(line.trim_start()){
+            Some(val)=>{
+                left_str=val.1;
+                prefix_word=val.0;
+            },
+            None=>{
+                prefix_word=line.trim_start();
+                left_str="";
+            }
+        }
+
+        //println!("source '{:?}' '{}'",prefix_word,left_str);
+        match prefix_word{
+            "module"=>{
+                left_str = left_str.trim_start();
+                is_first = true;
+                segment_type = SegmentType::ModuleName;
+                //println!("---1 '{:?}' '{}'",segment_type,left_str);
+            },
+            "fn"=>{
+                left_str = left_str.trim_start();
+                is_first = true;
+                segment_type = SegmentType::FnName;
+                //println!("---2 '{:?}' '{}'",segment_type,left_str);
+            },
+            "param"=>{
+                left_str = left_str.trim_start();
+                is_first = true;
+                segment_type = SegmentType::Param;
+                //println!("---3 '{:?}' '{}'",segment_type,left_str);
+            },
+            "return"=>{
+                left_str = left_str.trim_start();
+                is_first = true;
+                segment_type = SegmentType::Return;
+                //println!("---4 '{:?}' '{}'",segment_type,left_str);
+            },
+            _=>{
+                if line.trim_start().starts_with("+"){
+                    // 多行拼接使用+ 。之所以需要这个。是因为让使用者能保留多余的空字符以保证格式
+                    left_str = &line.trim_start()[1..];
+                }else{
+                    left_str = line.trim_start();
+                }
+                //println!("---5 '{:?}' '{}'",segment_type,left_str);
+            }
         }
 
         // 按照对应段进行处理
+        //println!("--- '{:?}' '{}'",segment_type,left_str);
         match segment_type {
             SegmentType::ModuleName => {
-                result.parse_module_name(is_first, actual_line)?;
+                result.parse_module_name(is_first, left_str)?;
             }
             SegmentType::FnName => {
-                result.parse_fn_line(is_first, actual_line)?;
+                result.parse_fn_line(is_first, left_str)?;
             }
             SegmentType::Param => {
-                result.parse_param(is_first, actual_line)?;
+                result.parse_param(is_first, left_str)?;
             }
             SegmentType::Return => {
-                result.parse_return(is_first, actual_line)?;
+                result.parse_return(is_first, left_str)?;
             }
             _ => {}
         }
