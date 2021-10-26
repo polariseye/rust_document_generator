@@ -1,176 +1,259 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>api文档</title>
-    <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-            font-size: 14px;
-        }
-        .page_container {
-            width: 100%;
-            position: relative;
-            background-color: #FFFFFF;
-            color: #2C3E50;
-            display: flex;
-            justify-content: center;
-        }
-        .api_page {
-            width: 1200px;
-            position: relative;
-        }
-        .alert_box {
-            margin: 20px 0 10px 0;
-            border: 1px solid #abdcff;
-            background-color: #f0faff;
-            padding: 16px;
-            position: relative;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            color: #515a6e;
-            line-height: 1.5;
-        }
-        .alert_box .title {
-            font-size: 16px;
-            color: #17233d;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .alert_box .conetnt {
-            font-size: 14px;
-            color: #515a6e;
-            line-height: 21px;
-            display: none;
-            text-align: justify;
-        }
-        .interface .items {
-            display: flex;
-            align-items: center;
-            margin-top: 8px;
-        }
-        .items_list {
-            margin-bottom: 20px;
-        }
-        .list_header .items label {
-            display: block;
-            margin-left: 5px;
-            padding: 1px 6px;
-            border-radius: 3px;
-            background-color: #F3F4F5;
-        }
-        .list_desc {
-            margin: 5px 0;
-        }
-        .list_param .table{
-            margin-top: 10px;
-            border: 1px solid #dfe2e5;
-        }
-        .table .tr {
-            display: flex;
-            align-items: center;
-        }
-        .table .tr .th,
-        .table .tr .td {
-            padding: 10px 20px;
-            flex: 1;
-            border-right: 1px solid #dfe2e5;
-        }
-        .table .tr .td:last-child {
-            border-right: none;
-            width: 500px;
-            flex: inherit;
-        }
-        .thead .td {
-            font-weight: 600;
-            color: #000000;
-        }
-        .tbody .tr {
-            border-top: 1px solid #dfe2e5;
-        }
-        .tbody .tr:nth-child(2n) {
-            background-color: #F3F4F5;
-        }
-        .list_return {
-            margin-top: 20px;
-        }
-        pre code.hljs {
-            position: relative;
-            border-radius: 6px;
-        }
-    </style>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/monokai.min.css">
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css" />
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/styles/monokai.min.css">
+	<style type="text/css">
+		.accordion-button:not(.collapsed) {
+			color: #3b4151;
+			background-color: #FFFFFF;
+			/* box-shadow: none; */
+		}
+		.accordion-item.post{
+			border-color: #49cc90;
+			box-shadow: 0 0 3px rgb(0 0 0 / 19%);
+		}
+		.accordion-item.post .button{
+			padding: 5px;
+			display: flex;
+			background-color: rgba(73,204,144,0.1);
+		}
+		.accordion-item.post .info label {
+			background: #49cc90;
+		}
+		.accordion-item.post .item_content {
+			background: rgba(73,204,144,.1);
+		}
+		.accordion-item.get{
+			border-color: #61affe;
+			box-shadow: 0 0 3px rgb(0 0 0 / 19%);
+		}
+		.accordion-item.get .button{
+			padding: 5px;
+			display: flex;
+			background-color: rgba(97,175,254,0.1);
+		}
+		.accordion-item.get .info label {
+			background: #61affe;
+		}
+		.accordion-item.get .item_content {
+			background: rgba(97,175,254,0.1);
+		}
+		.accordion-button label {
+			display: block;
+			font-size: 14px;
+			font-weight: 700;
+			min-width: 80px;
+			padding: 6px 15px;
+			text-align: center;
+			border-radius: 3px;
+			text-shadow: 0 1px 0 rgb(0 0 0 / 10%);
+			font-family: Titillium Web,sans-serif;
+			color: #fff;
+			margin-right: 10px;
+		}
+		.accordion-button::after {
+			width: 10px;
+			height: 10px;
+			background-size: 10px;
+		}
+		.accordion-button {
+			align-content: center;
+			align-items: center;
+			justify-content: space-between;
+		}
+		.accordion-button .info{
+			display: flex;
+			align-content: center;
+			align-items: center;
+			flex: 1;
+		}
+		.accordion-button .desc{
+			font-weight: 500;
+			color: #3b4151;
+			letter-spacing: 1px;
+			margin-right: 10px;
+		}
+		.api_header {
+			margin-top: 20px;
+		}
+		.interface_items {
+			margin-bottom: 10px;
+		}
+		.interface_items .btn {
+			display: block;
+		}
+		.accordion-collapse  .item_content {
+			box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+		}
+		.content_table {
+			padding: 20px;
+		}
+		.item_content .title {
+			padding: 8px 20px;
+			background: hsla(0,0%,100%,.8);
+			box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+			display: flex;
+			align-items: center;
+		}
+		.content_table .table_head {
+			border-bottom: 1px solid rgba(59,65,81,0.2);
+			font-size: 14px;
+			font-weight: 700;
+			padding: 12px 0;
+			text-align: left;
+			font-family: Open Sans,sans-serif;
+			color: #3b4151;
+			display: flex;
+			align-items: center;
+		}
+		.content_table .table_head .items {
+			width: 200px;
+			flex: inherit;
+		}
+		.content_table .table_head .items:last-child {
+			flex: 1;
+		}
+		.table_con .con_list {
+			display: flex;
+			align-content: center;
+			align-items: center;
+			font-size: 14px;
+			padding: 12px 0;
+			text-align: left;
+			font-family: Open Sans,sans-serif;
+			color: #3b4151;
+			display: flex;
+		}
+		.table_con .con_list .items {
+			width: 200px;
+			flex: inherit;
+		}
+		.table_con .con_list .items:first-child {
+			font-weight: 700;
+		}
+		.table_con .con_list .items:last-child {
+			flex: 1;
+			font-weight: 500;
+		}
+		.no_param {
+			font-size: 12px;
+			margin: 0 0 5px;
+			font-family: Open Sans,sans-serif;
+			color: #3b4151;
+			padding: 15px 20px;
+		}
+		.execute_wrapper {
+			padding: 20px;
+		}
+		pre {
+			font-size: 12px;
+			margin: 0;
+			padding: 0 10px;
+			display: flex;
+			word-wrap: break-word;
+			word-break: break-all;
+			word-break: break-word;
+			hyphens: auto;
+			white-space: pre-wrap;
+			border-radius: 0px;
+			background: #272822;
+			color: #fff;
+		}
+		.modules_items .title {
+			margin-bottom: 10px;
+			font-size: 20px;
+			font-weight: 700;
+		}
+	</style>
+	<script src="/static/bootstrap.bundle.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.3.1/build/highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
 </head>
 <body>
-<div class="page_container">
-    <div class="api_page">
-        <div class="page_header">
-            <div class="alert_box">
-                <div class="title">{{project_item.Name}}</div>
-                <div class="content">
-                    {{api_list.Header}}
-                </div>
-            </div>
-        </div>
-        <div class="page_content">
-            <div class="interface">
-                <!-- 接口循环 -->
-                {% for api_item in api_list.ApiList %}
-                <div class="items_list">
-                    <div class="list_header">
-                        <div class="items">
-                            模块名:<label>{{api_item.ModuleName}}</label>
-                        </div>
-                        <div class="items">
-                            接口名称:<label>{{api_item.Name}}</label>
-                        </div>
-                        <div class="items">
-                            请求方式:<label>{{api_item.HttpMethod}}</label>
-                        </div>
-                        <div class="items">
-                            路径:<label>{{api_item.Path}}</label>
-                        </div>
-                    </div>
-                    <div class="list_desc">{{api_item.Desc}}</div>
-                    <div class="list_param">
-                        <div class="name">参数列表:</div>
-                        <div class="table">
-                            <div class="thead">
-                                <div class="tr">
-                                    <div class="td">参数名称</div>
-                                    <div class="td">参数类型</div>
-                                    <div class="td">是否必须</div>
-                                    <div class="td">备注</div>
-                                </div>
-                            </div>
-                            <div class="tbody">
-                                {% for param_item in api_item.ParamList %}
-                                <div class="tr">
-                                    <div class="td">{{param_item.Name}}</div>
-                                    <div class="td">{{param_item.ParamType}}</div>
-                                    <div class="td">{{param_item.Required}}</div>
-                                    <div class="td">{{param_item.Desc}}</div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list_return">
-                        <div class="">返回值:{{api_item.ReturnDesc}}</div>
-                        <pre>
-									<code class="language-json">
-                                        {{api_item.ReturnContent}}
-									</code>
-						</pre>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
+	<div class="container-lg">
+		<div class="api_header">
+			<div class="alert alert-success" role="alert">
+				<h4 class="alert-heading">{{project_item.Name}}</h4>
+				<p>
+					{{api_list.Header | safe }}
+				</p>
+			</div>
+		</div>
+		<div class="api_list">
+			<div class="list_modules">
+				<!-- 模块开始循环 -->
+				{% for group_item in api_list.GroupApiList %}
+				<div class="modules_items">
+					<div class="title">
+						{{group_item.ModuleName}}模块
+					</div>
+					<div class="list_interface">
+						<!-- 接口开始循环 -->
+						{% for api_item in group_item.ApiList %}
+						<div class="interface_items">
+							<!-- accordion-item 类需要添加Method，如post，get -->
+							<div class="accordion-item {{api_item.HttpMethod}}">
+								<div class="accordion-button button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{loop.index}}">
+									<div class="info">
+										<label>{{api_item.HttpMethod | upper}}</label>
+										<span>{{api_item.Path}}</span>
+									</div>
+									<!-- 接口描述信息 -->
+									<div class="desc">{{api_item.Desc}}</div>
+								</div>
+								<div id="collapseOne{{loop.index}}" class="accordion-collapse collapse">
+									<div class="item_content">
+										<div class="title">Parameters</div>
+										<!-- 当不存在参数时 -->
+										{% if api_item.ParamList | length <=0 %}
+											<div class="no_param">No parameters</div>
+										{% else %}
+											<!-- 当存在参数时 -->
+											<div class="content_table">
+												<div class="table_head">
+													<div class="items">Name</div>
+													<div class="items">Type</div>
+													<div class="items">Required</div>
+													<div class="items">Description</div>
+												</div>
+												<div class="table_con">
+													<!-- 参数列表循环 -->
+													{% for param_item in api_item.ParamList %}
+														<div class="con_list">
+															<div class="items">{{param_item.Name}}</div>
+															<div class="items">{{param_item.ParamType}}</div>
+															<div class="items">{{param_item.Required}}</div>
+															<div class="items">{{param_item.Desc}}</div>
+														</div>
+													{% endfor %}
+												</div>
+											</div>
+											<div class="execute_wrapper"></div>
+										{% endif %}
+									</div>
+									<div class="item_content">
+										<div class="title">
+											Responses
+											{% if api_item.ReturnDesc != "" %}
+												:{{api_item.ReturnDesc}}
+											{% endif %}
+										</div>
+										<pre>
+											<code class="language-json">{{api_item.ReturnContent}}</code>
+										</pre>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 </body>
 </html>

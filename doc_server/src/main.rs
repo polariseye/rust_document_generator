@@ -74,7 +74,10 @@ async fn main() {
             .and(warp::path!("api" / String))
             .and(warp::path::end())
             .and(warp::get())
-            .and_then(get_api_list));
+            .and_then(get_api_list))
+        .or(
+            warp::path("static").and(warp::fs::dir("./static/"))
+        );
 
     println!("doc server start listen at:{}",port);
     warp::serve(api_filter).run(([0, 0, 0, 0], port)).await;
@@ -128,7 +131,7 @@ pub async fn get_api_list(project_id: String) -> Result<Box<dyn warp::Reply>, Re
         }
     }
 
-    return match api_doc::get_api_list(&project_item) {
+    return match api_doc::get_grouped_api_list(&project_item) {
         Ok(val) => {
             let mut ctx = tera::Context::new();
             ctx.insert("api_list", &val);

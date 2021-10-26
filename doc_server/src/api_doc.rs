@@ -4,6 +4,7 @@ use doc_def::file::ItemType;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::Path;
+use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
 pub struct Document {
@@ -11,6 +12,22 @@ pub struct Document {
     pub header: String,
     #[serde(rename = "ApiList")]
     pub api_list: Vec<ApiDocument>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct GroupedDocument{
+    #[serde(rename = "Header")]
+    pub header: String,
+    #[serde(rename = "GroupApiList")]
+    pub group_api: Vec<GroupApi>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct GroupApi{
+    #[serde(rename = "ModuleName")]
+    pub module_name:String,
+    #[serde(rename = "ApiList")]
+    pub api_list:Vec<ApiDocument>
 }
 
 pub fn get_api_list(project_item: &project::ProjectInfo) -> Result<Document, String> {
@@ -29,6 +46,33 @@ pub fn get_api_list(project_item: &project::ProjectInfo) -> Result<Document, Str
             }
         }
     };
+}
+
+pub fn get_grouped_api_list(project_item: &project::ProjectInfo) -> Result<GroupedDocument, String>{
+    let doc_obj= get_api_list(project_item)?;
+    let mut grouped_api:Vec<GroupApi>=Vec::new();
+    for item in &doc_obj.api_list{
+
+        let mut is_found=false;
+        for group_item in &mut grouped_api{
+            if &group_item.module_name==&item.module_name{
+                group_item.api_list.push(item.clone());
+                is_found=true;
+            }
+        }
+
+        if is_found==false{
+            grouped_api.push( GroupApi{
+                module_name:item.module_name.clone(),
+                api_list:vec![item.clone()],
+            });
+        }
+    }
+
+    Ok(GroupedDocument{
+        header:doc_obj.header,
+        group_api:grouped_api,
+    })
 }
 
 fn get_api_list_detail(file_path: String) -> Result<Document, String> {

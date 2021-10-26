@@ -3,5 +3,10 @@
     "Id": "doc_server",
     "Name": "文档服务",
     "Path": "../"
+  },
+  {
+    "Id": "lobby_server",
+    "Name": "游戏大厅服务",
+    "Path": "E:/code/rust_code/lobby-server"
   }
 ]
