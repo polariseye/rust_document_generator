@@ -5,8 +5,6 @@ use once_cell::sync::Lazy;
 use tera::Tera;
 use warp::http::StatusCode;
 use warp::{Filter, Rejection};
-use std::collections::HashMap;
-use std::error::Error;
 use std::str::FromStr;
 
 static TERA: Lazy<Tera> = Lazy::new(|| {
@@ -60,7 +58,7 @@ async fn main() {
         }
     }
 
-    TERA.check_macro_files();
+    let _result=TERA.check_macro_files();
 
     let api_filter = warp::any();
     let api_filter = api_filter

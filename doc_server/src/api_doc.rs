@@ -4,7 +4,6 @@ use doc_def::file::ItemType;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::Path;
-use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
 pub struct Document {
