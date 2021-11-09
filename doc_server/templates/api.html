@@ -186,6 +186,7 @@
 			<div class="list_modules">
 				<!-- 模块开始循环 -->
 				{% for group_item in api_list.GroupApiList %}
+				{% set module_index = loop.index %}
 				<div class="modules_items">
 					<div class="title">
 						{{group_item.ModuleName}}模块
@@ -196,7 +197,7 @@
 						<div class="interface_items">
 							<!-- accordion-item 类需要添加Method，如post，get -->
 							<div class="accordion-item {{api_item.HttpMethod}}">
-								<div class="accordion-button button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{loop.index}}">
+								<div class="accordion-button button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_{{module_index}}_{{loop.index}}">
 									<div class="info">
 										<label>{{api_item.HttpMethod | upper}}</label>
 										<span>{{api_item.Path}}</span>
@@ -204,7 +205,7 @@
 									<!-- 接口描述信息 -->
 									<div class="desc">{{api_item.Desc}}</div>
 								</div>
-								<div id="collapseOne{{loop.index}}" class="accordion-collapse collapse">
+								<div id="collapseOne_{{module_index}}_{{loop.index}}" class="accordion-collapse collapse">
 									<div class="item_content">
 										<div class="title">Parameters</div>
 										<!-- 当不存在参数时 -->
